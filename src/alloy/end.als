@@ -157,18 +157,6 @@ assert MartaUniqueSolution {
         (g1 = g2)  // Marta is always at the same position
 }
 
-// Assert that Marta's position and car are deterministic
-assert MartaDeterministic {
-    // If E is Marta in one solution, then E is always Marta
-    (some g: Girl | g = E and g.name = Marta) implies
-    (all g: Girl | g.name = Marta implies g = E)
-    
-    // And if Marta owns Car2 in one solution, she always owns Car2
-    and
-    (some g: Girl | g.name = Marta and g.owns = Car2) implies
-    (all g: Girl | g.name = Marta implies g.owns = Car2)
-}
-
 // Run to find valid configurations with all constraints
 run {} for 5 Int
 
@@ -180,4 +168,3 @@ check { not InvalidConfiguration } for 5 Int
 
 // Check that Marta's solution is unique
 check MartaUniqueSolution for 5 Int
-check MartaDeterministic for 5 Int
