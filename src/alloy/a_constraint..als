@@ -74,5 +74,35 @@ pred areNeighbors[g1, g2: Girl] {
     (g1 = D and g2 = E) or (g1 = E and g2 = D)
 }
 
+// Girl A's statement:
+// "Laura is not next to her, and A's car is now in front of Bianca"
+fact GirlA_Statement {
+    // Laura is not standing next to Girl A
+    all g: Girl | g.name = Laura implies not areNeighbors[A, g]
+    
+    // A's car is now in front of Bianca
+    // This means: The car that A owns is at the position where Bianca is standing
+    // Since girls are at fixed positions, if Bianca is at position X, then A owns CarX
+    all g: Girl | g.name = Bianca implies 
+        (g = A implies A.owns = Car1) and
+        (g = B implies A.owns = Car2) and
+        (g = C implies A.owns = Car3) and
+        (g = D implies A.owns = Car4) and
+        (g = E implies A.owns = Car5)
+}
+
+// Check to verify that a specific invalid configuration is not allowed
+pred InvalidConfiguration {
+    // Girl A is named Franca and owns Car1
+    A.name = Franca
+    A.owns = Car1
+    
+    // Girl B is named Laura and owns Car2
+    B.name = Laura
+    B.owns = Car2
+}
+
 // Run to find valid configurations with all constraints
 run {} for 5 Int
+
+check { not InvalidConfiguration } for 5 Int
